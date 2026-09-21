@@ -1,0 +1,4 @@
+﻿,n_features,f1_mean,f1_std,roc_auc_mean,roc_auc_std,pr_auc_mean,fit_time_s
+A: original,28.0,0.8103,0.0049,0.942,0.001,0.9157,7.5429
+B: original + engineered,37.0,0.8127,0.0042,0.9428,0.001,0.9165,9.1473
+C: selected,18.0,0.8112,0.0027,0.9417,0.0009,0.9154,5.5475

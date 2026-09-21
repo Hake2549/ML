@@ -1,0 +1,6 @@
+﻿feature_1,feature_2,corr
+arrival_date_month,arrival_date_week_number,0.9951029961293942
+stays_in_week_nights,total_nights,0.9402672248012823
+children,is_family,0.8951563432929557
+adults,total_guests,0.8192764648659008
+stays_in_weekend_nights,total_nights,0.7600311668689066

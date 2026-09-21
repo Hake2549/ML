@@ -1,0 +1,6 @@
+﻿model,hyperparameter,values_tried,after_random_search,final_value
+LogisticRegression,C,"[np.float64(0.013985059241738306), np.float64(0.04661686413912769), np.float64(0.13985059241738307)]",0.04661686413912769,0.13985059241738307
+RandomForest,max_depth,"[20, 30, None]",,30.0
+RandomForest,min_samples_leaf,"[1, 2, 4]",2.0,2.0
+HistGradientBoosting,learning_rate,"[np.float64(0.05336768697198627), np.float64(0.10673537394397253), np.float64(0.1601030609159588)]",0.10673537394397253,0.1601030609159588
+HistGradientBoosting,max_leaf_nodes,"[64, 127, 254]",127.0,254.0

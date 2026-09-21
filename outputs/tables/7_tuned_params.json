@@ -1,0 +1,21 @@
+{
+  "LogisticRegression": {
+    "model__C": 0.13985059241738307,
+    "model__class_weight": "balanced"
+  },
+  "RandomForest": {
+    "model__class_weight": "balanced_subsample",
+    "model__max_depth": 30,
+    "model__max_features": "log2",
+    "model__min_samples_leaf": 2,
+    "model__n_estimators": 300
+  },
+  "HistGradientBoosting": {
+    "model__class_weight": "balanced",
+    "model__l2_regularization": 0.0023036990230378648,
+    "model__learning_rate": 0.1601030609159588,
+    "model__max_depth": 10,
+    "model__max_leaf_nodes": 254,
+    "model__min_samples_leaf": 20
+  }
+}

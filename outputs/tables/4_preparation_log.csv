@@ -1,0 +1,10 @@
+﻿,step,reason,rows_before,rows_after,rows_removed
+0,"drop ['reservation_status', 'reservation_status_date', 'assigned_room_type']",data leakage: known only after the outcome,119390,119390,0
+1,children: NaN -> 0,only 4 missing; most bookings have no children,119390,119390,0
+2,country: NaN -> 'Unknown',missing country is a category of its own,119390,119390,0
+3,agent: NaN -> 'None' + has_agent flag,NaN means booked without a travel agent,119390,119390,0
+4,company: drop column + has_company flag,~94% missing; NaN means not a company booking,119390,119390,0
+5,meal: 'Undefined' -> 'SC',dataset paper: Undefined/SC both mean no meal package,119390,119390,0
+6,remove rows with 0 guests,a booking without guests is invalid,119390,119210,180
+7,remove adr < 0 or adr > 1000,impossible / extreme price,119210,119208,2
+8,"arrival month -> number, build arrival_date",needed for season / weekday / time-based split,119208,119208,0

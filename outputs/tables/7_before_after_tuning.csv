@@ -1,0 +1,7 @@
+﻿model,stage,f1_mean,f1_std,roc_auc_mean,pr_auc_mean,train_f1_mean,gap_f1(train-cv),fit_time_s
+LogisticRegression,default,0.7629,0.0021,0.9119,0.8769,0.7641,0.0012,3.3228
+LogisticRegression,tuned,0.7784,0.0032,0.9122,0.8752,0.7804,0.002,3.4034
+RandomForest,default,0.8422,0.0036,0.9546,0.9358,0.9942,0.1521,50.2354
+RandomForest,tuned,0.8419,0.0028,0.9537,0.9338,0.9638,0.1218,44.1276
+HistGradientBoosting,default,0.8112,0.0027,0.9417,0.9154,0.8222,0.011,5.4569
+HistGradientBoosting,tuned,0.8344,0.0025,0.9496,0.9271,0.8961,0.0617,9.453

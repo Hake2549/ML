@@ -1,0 +1,9 @@
+# Large / generated files (GitHub limit 100 MB)
+outputs/models/
+*.joblib
+*.zip
+
+# Local tool files
+.gradio/
+.ipynb_checkpoints/
+__pycache__/

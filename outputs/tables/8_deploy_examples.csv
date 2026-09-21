@@ -1,0 +1,4 @@
+﻿example,hotel,lead_time,deposit_type,market_segment,customer_type,total_of_special_requests,required_car_parking_spaces,previous_cancellations,is_repeated_guest,country,cancel_probability,prediction
+"A: long lead time, non-refundable, group",City Hotel,300,Non Refund,Groups,Transient,0,0,1,0,PRT,0.9979,HIGH risk
+"B: short lead time, direct, repeat guest",Resort Hotel,5,No Deposit,Direct,Transient,2,1,0,1,GBR,0.0096,low risk
+"C: medium lead time, online TA",City Hotel,60,No Deposit,Online TA,Transient,1,0,0,0,FRA,0.259,low risk
