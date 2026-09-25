@@ -10,6 +10,8 @@
 | `data/hotel_bookings.csv` | ข้อมูลดิบ 119,390 แถว × 32 คอลัมน์ |
 | `data/hotel_bookings_clean.csv` | ข้อมูลที่คลีนแล้ว 119,208 แถว × 31 คอลัมน์ |
 | `data/hotel_bookings_clean_features.csv` | คลีนแล้ว + feature ใหม่ 9 ตัว = 119,208 แถว × 40 คอลัมน์ |
+| `data/hotel_bookings_model_18features.csv` | เฉพาะ 18 คอลัมน์ที่ใช้เทรน + target = 119,208 แถว × 19 คอลัมน์ |
+| `scripts/make_model_dataset.py` | สร้างไฟล์ 18 คอลัมน์จากผลการคัดเลือก feature จริง |
 | `scripts/make_clean_dataset.py` | สร้างไฟล์ที่คลีนแล้วทั้งสองไฟล์ขึ้นใหม่จากข้อมูลดิบ |
 | `outputs/figures/`, `outputs/tables/` | กราฟและตารางหลักฐานสำหรับรายงาน (ชื่อไฟล์ขึ้นต้นด้วยเลขหัวข้อ) |
 | `docs/Data-Dictionary.md` | คำอธิบายทุกคอลัมน์ |

@@ -15,7 +15,8 @@ df = raw.drop(columns=['reservation_status','reservation_status_date','assigned_
 df['children'] = df['children'].fillna(0).astype(int)
 df['country'] = df['country'].fillna('Unknown')
 df['has_agent'] = df['agent'].notna().astype(int)
-df['agent'] = df['agent'].map(lambda v: 'None' if pd.isna(v) else str(int(v)))
+# ใช้ 'NoAgent' ไม่ใช่ 'None' เพราะ pandas อ่านคำว่า None กลับมาเป็น NaN โดยอัตโนมัติ
+df['agent'] = df['agent'].map(lambda v: 'NoAgent' if pd.isna(v) else str(int(v)))
 df['has_company'] = df['company'].notna().astype(int)
 df = df.drop(columns=['company'])
 df['meal'] = df['meal'].replace('Undefined','SC')
