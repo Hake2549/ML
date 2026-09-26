@@ -14,7 +14,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
-from sklearn.ensemble import HistGradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import (average_precision_score, f1_score, precision_recall_curve,
                              precision_score, recall_score, roc_auc_score)
@@ -31,8 +31,11 @@ RANDOM_STATE = 42
 MIN_FREQ = 50
 
 params = json.loads((ROOT / 'outputs' / 'tables' / '7_tuned_params.json').read_text(encoding='utf-8'))
-hgb_params = {k.replace('model__', ''): v for k, v in params['HistGradientBoosting'].items()}
-print('hyperparameters:', hgb_params)
+tuned = {k.replace('model__', ''): v for k, v in params['RandomForest'].items()}
+# ลดขนาดโมเดลให้ deploy ได้ โดยคงค่าที่ได้จาก tuning ไว้เท่าที่ทำได้
+rf_params = dict(n_estimators=150, max_depth=25, min_samples_leaf=5,
+                 max_features=tuned['max_features'], class_weight=tuned['class_weight'])
+print('hyperparameters:', rf_params)
 
 df = pd.read_csv(DATA)
 features = [c for c in df.columns if c != TARGET]
@@ -52,7 +55,7 @@ pipe = Pipeline([
                                        min_frequency=MIN_FREQ)),
         ]), cat_cols),
     ])),
-    ('model', HistGradientBoostingClassifier(random_state=RANDOM_STATE, **hgb_params)),
+    ('model', RandomForestClassifier(random_state=RANDOM_STATE, n_jobs=-1, **rf_params)),
 ])
 
 t0 = time.time()
@@ -87,9 +90,9 @@ medians = {c: float(df[c].median()) for c in num_cols}
 bundle = {
     'pipeline': pipe, 'features': features, 'cat_cols': cat_cols, 'num_cols': num_cols,
     'threshold': threshold, 'metrics': metrics, 'choices': choices, 'medians': medians,
-    'model_name': 'HistGradientBoosting (tuned)', 'params': hgb_params,
+    'model_name': 'Random Forest (ฉบับย่อสำหรับเว็บ)', 'params': rf_params,
 }
-out = MODEL_DIR / 'hotel_cancel_hgb.joblib'
+out = MODEL_DIR / 'hotel_cancel_rf_small.joblib'
 joblib.dump(bundle, out, compress=3)
 print(f'saved: {out} ({out.stat().st_size / 1e6:.2f} MB)')
 (MODEL_DIR / 'model_metrics.json').write_text(json.dumps(metrics, indent=2), encoding='utf-8')

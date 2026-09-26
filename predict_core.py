@@ -10,7 +10,7 @@ import joblib
 import numpy as np
 import pandas as pd
 
-MODEL_PATH = Path(__file__).resolve().parent / 'models' / 'hotel_cancel_hgb.joblib'
+MODEL_PATH = Path(__file__).resolve().parent / 'models' / 'hotel_cancel_rf_small.joblib'
 
 LEAD_BINS = [-1, 7, 30, 90, 180, 365, np.inf]
 LEAD_LABELS = ['0-7', '8-30', '31-90', '91-180', '181-365', '365+']

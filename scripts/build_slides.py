@@ -523,9 +523,9 @@ header(s, 15, 'กรอกข้อมูลการจอง → ได้ค
 text(s, M, Inches(1.6), Inches(12.1), Inches(0.35),
      'เว็บแอป Streamlit — ผู้ใช้กรอกรายละเอียดการจอง ระบบคำนวณ 18 features แล้วแสดงความน่าจะเป็นที่จะยกเลิก',
      size=14, color=MUTED)
-cases = [('99.8%', 'จองล่วงหน้า 300 วัน\nNon Refund + Groups', RED, 'เสี่ยงสูง'),
-         ('25.9%', 'จองล่วงหน้า 60 วัน\nOnline TA', GOLD, 'เสี่ยงปานกลาง'),
-         ('1.0%', 'จองล่วงหน้า 5 วัน\nDirect + ลูกค้าเก่า', GREEN, 'เสี่ยงต่ำ')]
+cases = [('100%', 'จองล่วงหน้า 300 วัน\nNon Refund + Groups', RED, 'เสี่ยงสูง'),
+         ('33.3%', 'จองล่วงหน้า 60 วัน\nOnline TA', GOLD, 'เสี่ยงปานกลาง'),
+         ('0.6%', 'จองล่วงหน้า 5 วัน\nDirect + ลูกค้าเก่า', GREEN, 'เสี่ยงต่ำ')]
 x = M
 for val, desc, col, tag in cases:
     card(s, x, Inches(2.2), Inches(3.9), Inches(2.6), fill=CARD)
@@ -539,7 +539,7 @@ for val, desc, col, tag in cases:
 card(s, M, Inches(5.1), Inches(12.1), Inches(1.35), fill=NAVY)
 text(s, M + Inches(0.3), Inches(5.3), Inches(11.5), Inches(1.0),
      [[('ข้อจำกัดของระบบ', {'bold': True, 'color': GOLD})],
-      [('โมเดลบนเว็บใช้ HistGradientBoosting ขนาด 0.8 MB (F1 0.8334) แทน Random Forest 356.8 MB '
+      [('โมเดลบนเว็บเป็น Random Forest ฉบับย่อ 28.8 MB (F1 0.8376) แทนตัวเต็ม 356.8 MB '
         'เพราะข้อจำกัดด้านหน่วยความจำของบริการฟรี · ผลทำนายอิงข้อมูลโปรตุเกสปี 2015–2017',
         {'color': RGBColor(0xC7, 0xD2, 0xDE), 'size': 12})]], size=14, line_spacing=1.3)
 notes(s, 'ถ้าเน็ตในห้องใช้ได้ ให้เปิดเว็บจริงสาธิต 1 เคส')
