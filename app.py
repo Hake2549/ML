@@ -66,9 +66,25 @@ with st.form('booking'):
 
     with c2:
         adr = st.number_input('ราคาห้องต่อคืน (ADR, ยูโร)', min_value=0.0, max_value=1000.0, value=100.0, step=10.0)
-        deposit_type = st.selectbox('ประเภทเงินมัดจำ', options('deposit_type', 'No Deposit'))
-        market_segment = st.selectbox('กลุ่มตลาด (market segment)', options('market_segment', 'Online TA'))
-        customer_type = st.selectbox('ประเภทลูกค้า', options('customer_type', 'Transient'))
+        deposit_type = st.selectbox(
+            'ประเภทเงินมัดจำ', options('deposit_type', 'No Deposit'),
+            help='No Deposit = ไม่ต้องวางมัดจำ จ่ายตอนเข้าพัก · '
+                 'Non Refund = จ่ายเต็มจำนวนล่วงหน้า ยกเลิกแล้วไม่คืนเงิน · '
+                 'Refundable = วางมัดจำบางส่วน ยกเลิกแล้วได้เงินคืน')
+        market_segment = st.selectbox(
+            'กลุ่มตลาด (market segment)', options('market_segment', 'Online TA'),
+            help='การจองมาจากช่องทางการขายไหน · '
+                 'Online TA = เว็บจองออนไลน์ เช่น Booking.com, Agoda · '
+                 'Offline TA/TO = บริษัททัวร์หรือเอเจนต์แบบมีหน้าร้าน · '
+                 'Groups = จองเป็นหมู่คณะ · Direct = ติดต่อโรงแรมเอง · '
+                 'Corporate = บริษัทจองให้พนักงาน · Complementary = ห้องฟรีไม่เก็บเงิน · '
+                 'Aviation = ลูกเรือหรือสายการบิน')
+        customer_type = st.selectbox(
+            'ประเภทลูกค้า', options('customer_type', 'Transient'),
+            help='ลักษณะของการจอง · Transient = ลูกค้าทั่วไป จองเดี่ยว ไม่ผูกสัญญา · '
+                 'Transient-Party = ลูกค้าทั่วไปที่การจองผูกกับการจองอื่นในกลุ่มเดียวกัน · '
+                 'Contract = มีสัญญาผูกกับโรงแรม เช่น บริษัททำสัญญารายปี · '
+                 'Group = จองแบบกลุ่ม')
 
     with c3:
         country = st.selectbox('ประเทศของลูกค้า', options('country', 'PRT'),
