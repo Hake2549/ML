@@ -10,3 +10,6 @@ __pycache__/
 
 # ยกเว้นโมเดลขนาดเล็กที่ใช้ deploy (0.8 MB)
 !models/hotel_cancel_hgb.joblib
+
+# ไฟล์ที่สร้างระหว่างทาง
+outputs/figures/_cropped/

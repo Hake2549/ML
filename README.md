@@ -19,7 +19,7 @@
 | `outputs/figures/`, `outputs/tables/` | กราฟและตารางหลักฐานสำหรับรายงาน (ชื่อไฟล์ขึ้นต้นด้วยเลขหัวข้อ) |
 | `docs/Data-Dictionary.md` | คำอธิบายทุกคอลัมน์ |
 | `docs/Project-Plan-7-Days.md` | แผนงาน 7 วัน |
-| `slides/Hotel-Booking-Cancellation-Prediction.pptx` | ไฟล์นำเสนอ 17 หน้า (สร้างด้วย scripts/build_slides.py) |
+| `slides/Hotel-Booking-Cancellation-Prediction.pptx` | ไฟล์นำเสนอ 17 หน้า (สร้างด้วย scripts/build_slides.py และแปลงเป็น PDF ด้วย scripts/export_pdf.py) |
 | `docs/Slide-Plan.md` | แผนสไลด์นำเสนอ 17 หน้า + แบ่งเวลาและผู้พูด |
 
 ไฟล์โมเดล (`outputs/models/*.joblib`) ไม่ได้อยู่ใน repo เพราะขนาดเกิน 100 MB ถ้าต้องการโมเดล ให้รัน notebook ใหม่เพื่อสร้างไฟล์

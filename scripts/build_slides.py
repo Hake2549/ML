@@ -10,6 +10,7 @@ from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
+from pptx.oxml.ns import qn
 from pptx.util import Emu, Inches, Pt
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -26,6 +27,24 @@ CARD = RGBColor(0xF2, 0xF5, 0xF8)
 RED = RGBColor(0xB3, 0x3A, 0x3A)
 GREEN = RGBColor(0x1E, 0x7A, 0x5E)
 FONT = 'Tahoma'
+
+def set_thai_font(run, name=None):
+    """ภาษาไทยเป็น complex script ต้องกำหนด a:cs ด้วย ไม่งั้นจะตกไปใช้ฟอนต์สำรอง"""
+    name = name or FONT
+    rPr = run._r.get_or_add_rPr()
+    latin = rPr.find(qn('a:latin'))
+    prev = latin
+    for tag in ('a:ea', 'a:cs'):
+        el = rPr.find(qn(tag))
+        if el is None:
+            el = rPr.makeelement(qn(tag), {})
+            if prev is not None:
+                prev.addnext(el)
+            else:
+                rPr.append(el)
+        el.set('typeface', name)
+        prev = el
+
 
 W, H = Inches(13.333), Inches(7.5)
 M = Inches(0.6)                      # ขอบซ้าย/ขวา
@@ -67,6 +86,7 @@ def text(slide, x, y, w, h, runs, size=14, color=INK, bold=False, align=PP_ALIGN
             r.text = t
             f = r.font
             f.name = FONT
+            set_thai_font(r)
             f.size = Pt(opt.get('size', size))
             f.bold = opt.get('bold', bold)
             f.color.rgb = opt.get('color', color)
@@ -104,6 +124,7 @@ def header(slide, number, title, kicker=None):
     r = p.add_run()
     r.text = str(number)
     r.font.name, r.font.size, r.font.bold, r.font.color.rgb = FONT, Pt(20), True, NAVY
+    set_thai_font(r)
     tx = M + d + Inches(0.25)
     if kicker:
         text(slide, tx, Inches(0.3), W - tx - M, Inches(0.3), kicker, size=11, color=GOLD, bold=True)
@@ -119,11 +140,28 @@ def bullets(slide, x, y, w, items, size=14, gap=10):
     for it in items:
         parts = [(it, {})] if isinstance(it, str) else it
         paras.append([('•  ', {'color': GOLD, 'bold': True})] + list(parts))
-    return text(slide, x, y, w, Inches(0.4), paras, size=size, space_after=gap, line_spacing=1.25)
+    box = text(slide, x, y, w, Inches(0.4), paras, size=size, space_after=gap, line_spacing=1.25)
+    for para in box.text_frame.paragraphs:      # ให้บรรทัดที่ตัดขึ้นใหม่เยื้องตรงกับข้อความ ไม่ชนหัวข้อ bullet
+        pPr = para._p.get_or_add_pPr()
+        pPr.set('marL', str(Inches(0.22)))
+        pPr.set('indent', str(-Inches(0.22)))
+    return box
+
+
+CROP_DIR = ROOT / 'outputs' / 'figures' / '_cropped'
+
+
+def crop_top(name, frac):
+    """ครอปเฉพาะส่วนบนของกราฟ (feature สำคัญอยู่ด้านบน) เพื่อให้ตัวอักษรใหญ่ขึ้น"""
+    CROP_DIR.mkdir(exist_ok=True)
+    out = CROP_DIR / f'{Path(name).stem}_top.png'
+    im = Image.open(FIG / name)
+    im.crop((0, 0, im.width, int(im.height * frac))).save(out)
+    return out
 
 
 def picture(slide, name, x, y, max_w, max_h):
-    path = FIG / name
+    path = name if isinstance(name, Path) else FIG / name
     iw, ih = Image.open(path).size
     scale = min(max_w / iw, max_h / ih)
     w, h = int(iw * scale), int(ih * scale)
@@ -255,11 +293,11 @@ end_y = table(s, M, Inches(1.7), Inches(8.0), [
     ['agent / company ว่าง', 'แปลงเป็น flag มี/ไม่มี', '0'],
     ['ไม่มีผู้เข้าพัก', 'ลบแถวทิ้ง', ('180', True)],
     ['adr ติดลบ / เกิน 1,000', 'ลบแถวทิ้ง', ('2', True)],
-], col_w=[3.4, 3.2, 1.4])
-stat(s, Inches(9.0), Inches(1.7), Inches(3.7), Inches(1.3), '119,390 → 119,208',
+], col_w=[3.4, 3.2, 1.4], row_h=Inches(0.62))
+stat(s, Inches(9.0), Inches(1.72), Inches(3.7), Inches(1.6), '119,390 → 119,208',
      'จำนวนแถวก่อน → หลังคลีน', value_color=NAVY, value_size=19)
-stat(s, Inches(9.0), Inches(3.2), Inches(3.7), Inches(1.3), '182 แถว', 'ลบทิ้งทั้งหมด คิดเป็น 0.15%', value_color=GOLD)
-text(s, Inches(9.0), Inches(4.75), Inches(3.7), Inches(1.2),
+stat(s, Inches(9.0), Inches(3.5), Inches(3.7), Inches(1.6), '182 แถว', 'ลบทิ้งทั้งหมด คิดเป็น 0.15%', value_color=GOLD)
+text(s, Inches(9.0), Inches(5.35), Inches(3.7), Inches(1.2),
      'อัตรายกเลิกหลังคลีน 37.08%\nแทบไม่ต่างจาก 37.04% ก่อนคลีน\n→ การลบแถวไม่ทำให้สัดส่วนคลาสบิดเบือน',
      size=12, color=MUTED, line_spacing=1.3)
 text(s, M, end_y + Inches(0.3), Inches(8.0), Inches(0.6),
@@ -328,7 +366,7 @@ for title_, sub, fname in labels:
          align=PP_ALIGN.CENTER, space_after=0)
     text(s, x, Inches(1.78), cw, Inches(0.22), sub, size=11, color=MUTED, align=PP_ALIGN.CENTER,
          space_after=0)
-    picture(s, fname, x, Inches(2.1), cw, Inches(3.3))
+    picture(s, crop_top(fname, 0.55), x, Inches(2.1), cw, Inches(3.3))
     x += cw + Inches(0.32)
 stat(s, M, Inches(5.65), Inches(2.6), Inches(1.15), '14 ตัว', 'ได้ครบ 3 โหวต')
 stat(s, M + Inches(2.85), Inches(5.65), Inches(2.6), Inches(1.15), '4 ตัว', 'ได้ 2 โหวต')
