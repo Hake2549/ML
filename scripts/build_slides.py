@@ -382,15 +382,15 @@ s = add_slide()
 header(s, 9, 'ใช้ feature น้อยลงครึ่งหนึ่ง แต่ผลเท่าเดิมและเทรนเร็วขึ้น', kicker='ก่อน – หลังคัดเลือก')
 table(s, M, Inches(1.7), Inches(7.4), [
     ['ชุด Feature', 'จำนวน', 'F1 (CV)', 'ROC-AUC'],
-    ['A: ตัวแปรเดิม', '28', '0.8103 ± 0.0049', '0.9420'],
-    ['B: เดิม + ที่สร้างใหม่', '37', '0.8127 ± 0.0042', '0.9428'],
-    [('C: คัดเลือกแล้ว', True), ('18', True), ('0.8112 ± 0.0027', True), ('0.9417', True)],
+    ['A: ตัวแปรเดิม', '28', '0.8416 ± 0.0037', '0.9551'],
+    ['B: เดิม + ที่สร้างใหม่', '37', '0.8427 ± 0.0028', '0.9554'],
+    [('C: คัดเลือกแล้ว', True), ('18', True), ('0.8421 ± 0.0036', True), ('0.9546', True)],
 ], col_w=[3.0, 1.1, 2.2, 1.4], row_h=Inches(0.46), highlight=3)
 card(s, M, Inches(3.85), Inches(7.4), Inches(1.5), fill=RGBColor(0xFD, 0xF3, 0xE3))
 text(s, M + Inches(0.3), Inches(4.05), Inches(6.8), Inches(1.1),
-     [[('ผลต่างระหว่าง B กับ C = 0.0015 ', {'bold': True, 'color': NAVY}),
-       ('ซึ่งน้อยกว่าค่า std (0.0042)', {})],
-      [('→ ถือว่าไม่ต่างกันอย่างมีนัยสำคัญ แต่ C มีความแปรปรวนต่ำที่สุดและเทรนเร็วที่สุด จึงเลือก C',
+     [[('ผลต่างระหว่าง B กับ C = 0.0006 ', {'bold': True, 'color': NAVY}),
+       ('ซึ่งน้อยกว่าค่า std (0.0028)', {})],
+      [('→ ไม่ต่างกันอย่างมีนัยสำคัญ แต่ C ใช้ feature ครึ่งเดียวและเทรนเร็วขึ้นเท่าตัว (8.7 vs 17.5 วินาที)',
         {'bold': True, 'color': NAVY})]], size=14, line_spacing=1.3)
 picture(s, '5_performance_vs_k.png', Inches(8.3), Inches(1.7), Inches(4.4), Inches(3.4))
 text(s, Inches(8.3), Inches(5.25), Inches(4.4), Inches(0.9),
@@ -404,12 +404,10 @@ header(s, 10, 'Random Forest นำตั้งแต่ก่อน Tuning (F1 
 picture(s, '6_default_models_f1.png', Inches(6.9), Inches(1.6), Inches(5.8), Inches(3.6))
 table(s, M, Inches(1.7), Inches(6.0), [
     ['โมเดล (ค่า default)', 'F1 (CV)', 'ช่องว่าง Train–CV'],
-    ['Dummy (baseline)', '0.000', '0.000'],
     ['Logistic Regression', '0.763', '0.001'],
     ['Decision Tree', '0.791', ('0.203', True)],
     [('Random Forest', True), ('0.842', True), '0.152'],
-    ['HistGradientBoosting', '0.811', '0.011'],
-], col_w=[2.8, 1.4, 1.9], highlight=4)
+], col_w=[2.8, 1.4, 1.9], highlight=3)
 card(s, M, Inches(4.7), Inches(6.0), Inches(1.3), fill=RGBColor(0xFB, 0xEE, 0xEE))
 text(s, M + Inches(0.25), Inches(4.9), Inches(5.5), Inches(0.9),
      [[('Decision Tree overfit ชัดเจน ', {'bold': True, 'color': RED}),
@@ -417,11 +415,11 @@ text(s, M + Inches(0.25), Inches(4.9), Inches(5.5), Inches(0.9),
       [('Random Forest แก้ปัญหานี้ด้วยการรวมหลายต้นเข้าด้วยกัน', {})]],
      size=13, line_spacing=1.3)
 note(s, 'ทุกโมเดลใช้ Stratified 5-Fold Cross-Validation บน train set เดียวกัน และใช้ Pipeline ชุดเดียวกัน', y=Inches(6.3))
-notes(s, 'ชี้ให้เห็นว่า Dummy ได้ F1 = 0 ทั้งที่ Accuracy สูง')
+notes(s, 'ชี้ว่า Decision Tree overfit ชัดเจน ส่วน Random Forest แก้ด้วยการรวมหลายต้น')
 
 # ---------------------------------------------------------------- 11 metrics
 s = add_slide()
-header(s, 11, 'Accuracy หลอกตา — Dummy ได้ 62.9% แต่ F1 = 0', kicker='METRICS')
+header(s, 11, 'Accuracy หลอกตา — ทายว่า "ไม่ยกเลิก" ทุกรายการก็ได้ 62.9%', kicker='METRICS')
 card(s, M, Inches(1.65), Inches(6.0), Inches(1.5), fill=RGBColor(0xFB, 0xEE, 0xEE))
 text(s, M + Inches(0.25), Inches(1.85), Inches(5.5), Inches(1.2),
      [[('False Negative', {'bold': True, 'color': RED, 'size': 15})],
@@ -444,7 +442,7 @@ for val, lab, col in [('F1-score', 'ตัวชี้วัดหลัก — 
     stat(s, xs, Inches(4.0), Inches(2.9), Inches(1.75), val, lab, value_color=col,
          fill=RGBColor(0xFD, 0xF3, 0xE3) if col == GOLD else CARD)
     xs += Inches(3.05)
-note(s, 'Baseline: Dummy Classifier ทายคลาสที่พบบ่อยที่สุดเสมอ ได้ Accuracy 62.9% แต่ F1 = 0 คือจับคนที่จะยกเลิกไม่ได้เลยแม้แต่รายเดียว',
+note(s, 'เกณฑ์ขั้นต่ำ: การทายว่า "ไม่ยกเลิก" ทุกรายการได้ Accuracy 62.9% แต่ F1 = 0 คือจับคนที่จะยกเลิกไม่ได้เลยแม้แต่รายเดียว โมเดลจึงต้องชนะเกณฑ์นี้ให้ได้',
      y=Inches(6.1))
 notes(s, 'ผูก metric เข้ากับต้นทุนธุรกิจจริง ไม่ใช่เลือกเพราะเห็นคนอื่นใช้')
 
@@ -455,7 +453,6 @@ table(s, M, Inches(1.7), Inches(7.2), [
     ['โมเดล', 'F1 ก่อน', 'F1 หลัง', 'ช่องว่าง Train–CV'],
     ['Logistic Regression', '0.7629', ('0.7784', True), '0.001 → 0.002'],
     [('Random Forest', True), '0.8422', '0.8419', ('0.152 → 0.122', True)],
-    ['HistGradientBoosting', '0.8112', ('0.8344', True), '0.011 → 0.062'],
 ], col_w=[2.6, 1.3, 1.3, 2.2], row_h=Inches(0.46), highlight=2)
 card(s, M, Inches(3.65), Inches(7.2), Inches(1.45), fill=RGBColor(0xFD, 0xF3, 0xE3))
 text(s, M + Inches(0.28), Inches(3.85), Inches(6.6), Inches(1.05),
@@ -523,9 +520,9 @@ header(s, 15, 'กรอกข้อมูลการจอง → ได้ค
 text(s, M, Inches(1.6), Inches(12.1), Inches(0.35),
      'เว็บแอป Streamlit — ผู้ใช้กรอกรายละเอียดการจอง ระบบคำนวณ 18 features แล้วแสดงความน่าจะเป็นที่จะยกเลิก',
      size=14, color=MUTED)
-cases = [('99.8%', 'จองล่วงหน้า 300 วัน\nNon Refund + Groups', RED, 'เสี่ยงสูง'),
-         ('25.9%', 'จองล่วงหน้า 60 วัน\nOnline TA', GOLD, 'เสี่ยงปานกลาง'),
-         ('1.0%', 'จองล่วงหน้า 5 วัน\nDirect + ลูกค้าเก่า', GREEN, 'เสี่ยงต่ำ')]
+cases = [('100%', 'จองล่วงหน้า 300 วัน\nNon Refund + Groups', RED, 'เสี่ยงสูง'),
+         ('33.3%', 'จองล่วงหน้า 60 วัน\nOnline TA', GOLD, 'เสี่ยงปานกลาง'),
+         ('0.6%', 'จองล่วงหน้า 5 วัน\nDirect + ลูกค้าเก่า', GREEN, 'เสี่ยงต่ำ')]
 x = M
 for val, desc, col, tag in cases:
     card(s, x, Inches(2.2), Inches(3.9), Inches(2.6), fill=CARD)
@@ -539,7 +536,7 @@ for val, desc, col, tag in cases:
 card(s, M, Inches(5.1), Inches(12.1), Inches(1.35), fill=NAVY)
 text(s, M + Inches(0.3), Inches(5.3), Inches(11.5), Inches(1.0),
      [[('ข้อจำกัดของระบบ', {'bold': True, 'color': GOLD})],
-      [('โมเดลบนเว็บใช้ HistGradientBoosting ขนาด 0.8 MB (F1 0.8334) แทน Random Forest 356.8 MB '
+      [('โมเดลบนเว็บเป็น Random Forest ฉบับย่อ 28.8 MB (F1 0.8376) แทนตัวเต็ม 356.8 MB '
         'เพราะข้อจำกัดด้านหน่วยความจำของบริการฟรี · ผลทำนายอิงข้อมูลโปรตุเกสปี 2015–2017',
         {'color': RGBColor(0xC7, 0xD2, 0xDE), 'size': 12})]], size=14, line_spacing=1.3)
 notes(s, 'ถ้าเน็ตในห้องใช้ได้ ให้เปิดเว็บจริงสาธิต 1 เคส')
