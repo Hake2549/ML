@@ -75,7 +75,10 @@ with st.form('booking'):
                                help='PRT = โปรตุเกส (ลูกค้าในประเทศ)')
         agent = st.selectbox('รหัสเอเจนต์ที่จอง', options('agent', 'NoAgent'),
                              help='NoAgent = จองเองโดยไม่ผ่านเอเจนต์')
-        total_of_special_requests = st.slider('จำนวนคำขอพิเศษ', 0, 5, 0)
+        total_of_special_requests = st.slider(
+            'จำนวนคำขอพิเศษที่แจ้งตอนจอง', 0, 5, 0,
+            help='นับเป็นจำนวนรายการที่ลูกค้าขอเพิ่ม เช่น ขอเตียงคู่/เตียงแยก ขอห้องชั้นสูง '
+                 'ขอห้องปลอดบุหรี่ ขอวิวทะเล ขอเช็คอินก่อนเวลา (ถ้าไม่ได้ขออะไรเลยให้เลือก 0)')
         required_car_parking_spaces = st.slider('จำนวนที่จอดรถที่ขอ', 0, 3, 0)
 
     st.subheader('ประวัติลูกค้าและการแก้ไขการจอง')
