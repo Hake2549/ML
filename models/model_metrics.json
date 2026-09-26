@@ -1,0 +1,10 @@
+{
+  "threshold": 0.4952,
+  "f1": 0.8334,
+  "precision": 0.8081,
+  "recall": 0.8603,
+  "roc_auc": 0.9511,
+  "pr_auc": 0.9279,
+  "n_train": 95366,
+  "n_test": 23842
+}

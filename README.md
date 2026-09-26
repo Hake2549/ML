@@ -11,6 +11,9 @@
 | `data/hotel_bookings_clean.csv` | ข้อมูลที่คลีนแล้ว 119,208 แถว × 31 คอลัมน์ |
 | `data/hotel_bookings_clean_features.csv` | คลีนแล้ว + feature ใหม่ 9 ตัว = 119,208 แถว × 40 คอลัมน์ |
 | `data/hotel_bookings_model_18features.csv` | เฉพาะ 18 คอลัมน์ที่ใช้เทรน + target = 119,208 แถว × 19 คอลัมน์ |
+| `app.py`, `predict_core.py` | เว็บแอป Streamlit สำหรับทำนายการยกเลิก |
+| `models/hotel_cancel_hgb.joblib` | โมเดลขนาดเล็ก (0.8 MB) ที่เว็บใช้ |
+| `scripts/train_deploy_model.py` | เทรนโมเดลขนาดเล็กสำหรับ deploy ใหม่ |
 | `scripts/make_model_dataset.py` | สร้างไฟล์ 18 คอลัมน์จากผลการคัดเลือก feature จริง |
 | `scripts/make_clean_dataset.py` | สร้างไฟล์ที่คลีนแล้วทั้งสองไฟล์ขึ้นใหม่จากข้อมูลดิบ |
 | `outputs/figures/`, `outputs/tables/` | กราฟและตารางหลักฐานสำหรับรายงาน (ชื่อไฟล์ขึ้นต้นด้วยเลขหัวข้อ) |
@@ -30,3 +33,20 @@
 
 - Antonio, N., de Almeida, A., & Nunes, L. (2019). *Hotel booking demand datasets*. Data in Brief, 22, 41–49. https://www.sciencedirect.com/science/article/pii/S2352340918315191
 - Kaggle: https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand
+
+## เว็บแอป (Streamlit)
+
+รันในเครื่อง:
+
+```
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+Deploy ฟรีบน Streamlit Community Cloud: เข้า https://share.streamlit.io → New app →
+เลือก repo นี้ branch `main` → Main file path = `app.py` → Deploy
+
+โมเดลที่เว็บใช้คือ HistGradientBoosting (0.8 MB) ไม่ใช่ Random Forest 356.8 MB ของ notebook
+เพราะ Streamlit Community Cloud ให้ RAM 1 GB และ GitHub จำกัดไฟล์ละ 100 MB
+ผลบนชุดทดสอบ: F1 0.8334 · Precision 0.8081 · Recall 0.8603 · ROC-AUC 0.9511
+(Random Forest ได้ F1 0.8469 สูงกว่า 0.0135)
