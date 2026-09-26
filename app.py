@@ -8,7 +8,7 @@ import streamlit as st
 
 import predict_core as pc
 
-st.set_page_config(page_title='ทำนายการยกเลิกการจองโรงแรม', page_icon='🏨', layout='wide')
+st.set_page_config(page_title='ทำนายการยกเลิกการจองโรงแรม', layout='wide')
 
 
 @st.cache_resource
@@ -32,7 +32,7 @@ def options(col, preferred=None):
 
 # ---------------- Sidebar ----------------
 with st.sidebar:
-    st.header('ℹ️ เกี่ยวกับโมเดล')
+    st.header('เกี่ยวกับโมเดล')
     st.write(f"**โมเดล:** {bundle['model_name']}")
     st.write(f"**จำนวน features:** {len(bundle['features'])}")
     st.write(f"**Threshold:** {threshold:.2f}")
@@ -51,7 +51,7 @@ with st.sidebar:
                'ผลทำนายอาจไม่ตรงกับโรงแรมในบริบทอื่นหรือช่วงเวลาปัจจุบัน')
 
 # ---------------- Header ----------------
-st.title('🏨 ทำนายความเสี่ยงที่การจองจะถูกยกเลิก')
+st.title('ทำนายความเสี่ยงที่การจองจะถูกยกเลิก')
 st.caption('กรอกรายละเอียดการจอง แล้วกดปุ่มด้านล่างเพื่อดูความน่าจะเป็นที่ลูกค้าจะยกเลิก')
 
 with st.form('booking'):
@@ -84,7 +84,7 @@ with st.form('booking'):
     previous_bookings_not_canceled = c5.number_input('เคยจองแล้วไม่ยกเลิก (ครั้ง)', min_value=0, max_value=80, value=0)
     booking_changes = c6.number_input('จำนวนครั้งที่แก้ไขการจอง', min_value=0, max_value=20, value=0)
 
-    submitted = st.form_submit_button('🔮 ทำนายผล', type='primary', use_container_width=True)
+    submitted = st.form_submit_button('ทำนายผล', type='primary', use_container_width=True)
 
 # ---------------- Result ----------------
 if submitted:
