@@ -73,6 +73,7 @@
 - 3 วิธีที่ใช้: **Mutual Information** (Filter) · **RF Feature Importance** (Embedded) · **Permutation Importance** (Model-agnostic)
 - **จุดที่ทำให้ดูลึก:** RF Importance มีอคติเข้าข้างตัวแปรที่มีค่าหลากหลาย จึงต้องใช้ Permutation Importance ยืนยัน
 - ผลโหวต: 3 โหวตเต็ม 14 ตัว · 2 โหวต 4 ตัว · รวมเก็บ 18 ตัว
+- **ตรวจสอบซ้ำ (เผื่อโดนถามเรื่อง overfitting):** รัน RF Importance ใหม่ด้วยพารามิเตอร์ที่ tune แล้ว ได้อันดับสอดคล้องกันที่ **Spearman 0.985** และ Top-18 ตรงกัน **16/18 ตัว** → ดูสไลด์สำรอง `5_rf_importance_tuned_vs_default.png`
 - Top features: `deposit_type`, `agent`, `lead_time`, `country`, `is_domestic`, `total_of_special_requests`
 
 ## หน้า 9 — ผลก่อน–หลังคัดเลือก
@@ -160,7 +161,7 @@
 ## หน้า 17 — Q&A + Backup
 - ขอบคุณ + ลิงก์ Colab / GitHub
 - **สไลด์สำรองไว้ท้ายไฟล์** (ไม่ต้องนำเสนอ แต่เปิดได้ตอนถูกถาม):
-  `7_learning_curve.png` · `7_error_analysis.csv` · `7_random_search_*.csv` · `5_correlation_heatmap.png`
+  `7_learning_curve.png` · `7_error_analysis.csv` · `7_random_search_*.csv` · `5_correlation_heatmap.png` · **`5_rf_importance_tuned_vs_default.png`** (ใช้ตอบคำถามเรื่อง overfitting กับ Feature Importance)
 
 ---
 
@@ -186,6 +187,8 @@
 |---|---|
 | "Tuning แล้ว RF ไม่ดีขึ้นเลย ทำไมยังเลือก?" | F1 เท่าเดิมจริง แต่ช่องว่าง train–CV ลดจาก 0.152 → 0.122 และค่า std ต่ำลง คือเสถียรขึ้น ไม่ใช่เก่งขึ้น |
 | "ทำไม Feature Set C ไม่ดีกว่า B?" | ผลต่าง 0.0015 น้อยกว่า std (0.004) จึงถือว่าเท่ากัน แต่ C ใช้ feature ครึ่งเดียวและเทรนเร็วกว่า |
+| "RF overfit (gap 0.15) แล้วใช้ Feature Importance ของมันได้อย่างไร?" | 1) โมเดลที่ใช้หา importance ตั้ง `min_samples_leaf=5` ไว้ ช่องว่าง train–CV จึงเป็น **0.072** ซึ่งต่ำกว่าโมเดลสุดท้ายที่ใช้ทำนาย (0.126) 2) รันซ้ำด้วยพารามิเตอร์ที่ tune แล้ว อันดับสอดคล้องกัน Spearman **0.985** Top-18 ตรงกัน **16/18** 3) ให้ RF เป็นแค่ 1 ใน 3 เสียง และ Permutation Importance วัดบน validation set เป็นตัวถ่วง — ไม่มี feature ใดที่ RF เลือกคนเดียวแล้วผ่านเข้ารอบ |
+| "ทำไมไม่ใช้วิธีอื่นแทน RF Importance?" | Decision Tree overfit หนักกว่า (gap 0.20) · HistGradientBoosting ของ scikit-learn **ไม่มี** `feature_importances_` ให้ใช้ · Logistic Regression + L1 เป็นเชิงเส้นและให้คะแนนรายหมวดหลัง one-hot ไม่ใช่รายคอลัมน์ · SHAP ดีที่สุดแต่ช้ามากกับข้อมูลแสนแถว จึงเขียนไว้ในแนวทางพัฒนาต่อ |
 | "ทำไมต้องใช้ 3 วิธีคัดเลือก feature?" | แต่ละวิธีมีจุดอ่อนต่างกัน เช่น RF Importance เข้าข้างตัวแปรที่มีค่าหลากหลาย ส่วน MI มองทีละตัวแปร การโหวตทำให้ได้ feature ที่หลายมุมมองเห็นตรงกัน |
 | "แถวซ้ำ 31,994 แถวทำไมไม่ลบ?" | ไม่มี booking ID กรุ๊ปทัวร์ที่จองหลายห้องจึงดูเหมือนซ้ำ เราเก็บไว้แต่ระบุเป็นข้อจำกัดว่าอาจทำให้ random split ดูดีเกินจริง |
 | "เอาไปใช้กับโรงแรมไทยได้ไหม?" | โครงสร้างปัญหาเหมือนกัน แต่ต้อง retrain ด้วยข้อมูลไทย และผล time split ชี้ว่าต้อง retrain เป็นระยะอยู่แล้ว |
